@@ -10,10 +10,24 @@
   "author": "Parliamentary Digital Service",
   "license": "",
   "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/http-errors": "^2.0.4",
+    "@types/node": "^22.14.1",
+    "@types/qs": "^6.9.18",
+    "@types/range-parser": "^1.2.7",
+    "@types/send": "^0.17.4",
+    "css-loader": "^7.1.2",
+    "eslint": "^9.24.0",
+    "mini-css-extract-plugin": "^2.9.2",
+    "sass": "^1.86.3",
+    "sass-loader": "^16.0.5",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.2",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.0"
+  },
+  "dependencies": {
+    "http-errors": "^2.0.0"
   }
 }

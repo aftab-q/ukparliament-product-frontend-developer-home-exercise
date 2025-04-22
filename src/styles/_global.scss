@@ -1,0 +1,13 @@
+@use 'variables' as *;
+
+// Page background & font
+body {
+    background-color: $grey1;
+    font-family: $font-stack;
+    padding: 30px 15px 0;
+}
+
+// Full-width layout
+main {
+    width: 100%;
+}

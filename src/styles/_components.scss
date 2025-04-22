@@ -1,0 +1,61 @@
+@use 'variables' as *;
+
+// MP card component
+.mp-card {
+    background-color: $background;
+    padding: 15px 15px 0;
+    border-top: 5px solid $brand;
+
+    // Layout for image and info section
+    .mp-card__layout {
+        display: flex;
+    }
+
+    // Circular MP image with dynamic party-colored border
+    .mp-card__image {
+        border-radius: 50%;
+        border: 3px solid $party;
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+    }
+
+    // Info section containing MP details
+    .mp-card__info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding-left: 20px;
+    }
+
+    // Party name styling
+    .mp-card__party {
+        font-size: 20px;
+        color: $grey2;
+    }
+
+    // MP's name styling
+    .mp-card__name {
+        font-size: 26px;
+        font-weight: bold;
+        color: $brand;
+        padding-top: 5px;
+    }
+
+    // Constituency details
+    .mp-card__constituency {
+        font-size: 18px;
+        color: $grey2;
+        padding: 15px 0 20px;
+    }
+
+    // Status label formatting
+    .mp-card__status {
+        background-color: $grey1;
+        color: $alert;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+    }
+}
