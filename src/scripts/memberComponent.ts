@@ -11,13 +11,17 @@ export async function initMemberComponent(): Promise<void> {
     latestHouseMembership?: { membershipFrom: string; membershipEndDate?: string };
   }
 
+  // Find the member card element in the DOM
+  const card = document.getElementById("mp-card");
+
   // Extract the member ID from the URL query parameters
   const params = new URLSearchParams(window.location.search);
   const memberId = params.get("id");
 
-  // Exit early if member ID is missing
-  if (!memberId) {
-    console.warn("No member ID provided in the query parameters");
+  // Exit early and hide card if member ID is missing or card is not found
+  if (!memberId || !card) {
+    if (card) card.style.display = "none";
+    console.warn("No member ID provided or card element not found");
     return;
   }
 
@@ -35,6 +39,7 @@ export async function initMemberComponent(): Promise<void> {
     // Check for unsuccessful response status
     if (!response.ok) {
       console.error(`Fetch failed with status: ${response.status}`);
+      card.style.display = "none"; // Hide card on error
       return;
     }
 
@@ -42,12 +47,12 @@ export async function initMemberComponent(): Promise<void> {
     const responseData: { value: Member } = await response.json();
     const member = responseData.value;
 
-    // Find the member card element in the DOM
-    const card = document.getElementById("mp-card");
-    if (!card) {
-      console.warn("Member card element not found");
-      return;
-    }
+    // Select child elements for updating member information
+    const img = card.querySelector(".mp-card__image") as HTMLImageElement | null;
+    const party = card.querySelector(".mp-card__party") as HTMLElement | null;
+    const name = card.querySelector(".mp-card__name") as HTMLElement | null;
+    const constituency = card.querySelector(".mp-card__constituency") as HTMLElement | null;
+    const status = card.querySelector(".mp-card__status") as HTMLElement | null;
 
     // Apply the party color as a CSS custom property, only if available
     const partyColor = member.latestParty?.backgroundColour;
@@ -55,13 +60,6 @@ export async function initMemberComponent(): Promise<void> {
       const formattedColor = partyColor.startsWith("#") ? partyColor : `#${partyColor}`;
       document.documentElement.style.setProperty("--party-color", formattedColor);
     }
-
-    // Select child elements for updating member information
-    const img = card.querySelector(".mp-card__image") as HTMLImageElement | null;
-    const party = card.querySelector(".mp-card__party") as HTMLElement | null;
-    const name = card.querySelector(".mp-card__name") as HTMLElement | null;
-    const constituency = card.querySelector(".mp-card__constituency") as HTMLElement | null;
-    const status = card.querySelector(".mp-card__status") as HTMLElement | null;
 
     // Update DOM elements with member data, using fallbacks where needed
     if (img) img.src = member.thumbnailUrl ?? "";
@@ -78,7 +76,13 @@ export async function initMemberComponent(): Promise<void> {
       status.style.display = isMembershipActive ? "none" : "block";
       status.textContent = isMembershipActive ? "" : "No longer serving";
     }
+
+    // Ensure the card is visible once populated
+    card.style.display = "block";
   } catch (error) {
+    // Hide card on unexpected fetch failure
+    if (card) card.style.display = "none";
+
     // Handle fetch being aborted or other unexpected errors
     if (error instanceof DOMException && error.name === "AbortError") {
       console.warn("Fetch request was aborted");
